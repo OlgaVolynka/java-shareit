@@ -16,6 +16,7 @@ public class ItemDto {
     private String description;
     @NotNull
     private Boolean available;
+    
     public ItemDto(String name, String description, Boolean available) {
 
         this.name = name;
