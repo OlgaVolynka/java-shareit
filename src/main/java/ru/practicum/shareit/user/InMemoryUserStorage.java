@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Repository
 @Getter
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Long, User> users = new HashMap<>();
     private long id = 0;
@@ -35,9 +35,7 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public void updateUser(User user) {
-
         users.put(user.getId(), user);
-        //   return user;
     }
 
     public User getUserById(Long id) {

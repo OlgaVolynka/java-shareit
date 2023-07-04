@@ -1,8 +1,6 @@
 package ru.practicum.shareit.user;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -10,8 +8,6 @@ import javax.validation.constraints.NotNull;
 /**
  * TODO Sprint add-controllers.
  */
-
-
 
 @Data
 public class User {
