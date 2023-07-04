@@ -20,6 +20,7 @@ public class ItemDto {
     @NotNull
     private Boolean available;
     public ItemDto(String name, String description, boolean available) {
+        
         this.name = name;
         this.description = description;
         this.available = available;
