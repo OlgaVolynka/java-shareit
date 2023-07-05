@@ -20,9 +20,9 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public List<Item> findAll(@RequestHeader("X-Sharer-User-Id") Long userI) {
+    public List<Item> findAll(@RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Получен запрос GET users");
-        return itemService.findAll(userI);
+        return itemService.findAll(userId);
     }
 
     @GetMapping("/search")
@@ -38,8 +38,8 @@ public class ItemController {
     }
 
     @PatchMapping("{id}")
-    public Item updateItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                           @RequestBody Item item, @PathVariable("id") Long itemId) {
+    public Item updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
+                           @RequestBody Item item, @PathVariable("id") long itemId) {
         log.info("Получен запрос PUT item");
         return itemService.updateItem(item, userId, itemId);
     }

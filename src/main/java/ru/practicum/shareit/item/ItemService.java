@@ -35,7 +35,7 @@ public class ItemService {
         return itemStorage.create(item);
     }
 
-    public Item updateItem(Item item, Long userId, Long itemId) {
+    public Item updateItem(Item item, long userId, long itemId) {
 
         item.setOwner(userId);
         item.setId(itemId);
@@ -57,13 +57,14 @@ public class ItemService {
         itemStorage.deleteItem(itemId);
     }
 
-    public List<Item> findAll(Long userId) {
+    public List<Item> findAll(long userId) {
 
         List<Item> itemList = itemStorage.findAll();
 
         return itemList.stream()
                 .filter(item -> item.getOwner() == userId)
                 .collect(Collectors.toList());
+
     }
 
     public List<Item> search(String text) {
