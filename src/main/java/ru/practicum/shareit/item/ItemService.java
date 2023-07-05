@@ -43,7 +43,7 @@ public class ItemService {
 
         Item oldItem = itemStorage.getItemById(itemId);
 
-        if (item.getOwner() != oldItem.getOwner()) {
+        if (userId != oldItem.getOwner()) {
             throw new DataNotFoundException("неверно указан id пользователя");
         }
         if (item.getName() != null) oldItem.setName(item.getName());
