@@ -7,7 +7,7 @@ public class UserMapper {
     public static User toUser(UserDto userDto) {
         User user = new User();
         if (userDto.getName() != null) user.setName(userDto.getName());
-        if (userDto.getId() != null) user.setId(userDto.getId());
+        user.setId(userDto.getId());
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
         return user;
     }

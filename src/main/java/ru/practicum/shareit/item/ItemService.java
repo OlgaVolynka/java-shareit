@@ -44,10 +44,7 @@ public class ItemService {
         return itemStorage.create(item);
     }
 
-    public Item updateItem(ItemDto itemDto, Long userId, long itemId) {
-        if (userId == null) {
-            throw new WithoutXSharerUserId("Не указан id пользователя");
-        }
+    public Item updateItem(ItemDto itemDto, long userId, long itemId) {
 
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(userId);
@@ -58,6 +55,9 @@ public class ItemService {
 
         if (userId != oldItem.getOwner()) {
             throw new DataNotFoundException("неверно указан id пользователя");
+        }
+        if (item.getOwner() == null) {
+            throw new WithoutXSharerUserId("Не указан id пользователя");
         }
         if (item.getName() != null) oldItem.setName(item.getName());
         if (item.getDescription() != null) oldItem.setDescription(item.getDescription());

@@ -13,7 +13,7 @@ import java.util.Objects;
 @Setter
 public class UserDto {
 
-    private Long id;
+    private long id;
     @NotBlank(groups = Marker.OnCreate.class)
     private String name;
     @Email(message = "электронная почта не может быть пустой и должна содержать символ @", groups = Marker.OnCreate.class)
