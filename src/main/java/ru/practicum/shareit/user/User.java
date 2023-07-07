@@ -1,22 +1,34 @@
 package ru.practicum.shareit.user;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * TODO Sprint add-controllers.
  */
 
-@Data
+@Getter
+@Setter
 public class User {
 
     private long id;
 
     private String name;
-    @Email(message = "электронная почта не может быть пустой и должна содержать символ @")
-    @NotNull
+
     private String email;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -1,12 +1,13 @@
 package ru.practicum.shareit.item;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.Marker;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -15,13 +16,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping(path = "/items")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
     public List<Item> findAll(@RequestHeader("X-Sharer-User-Id") long userId) {
-        log.info("Получен запрос GET users");
+        log.info("Получен запрос GET allUsers");
         return itemService.findAll(userId);
     }
 
@@ -32,15 +33,18 @@ public class ItemController {
     }
 
     @PostMapping
+    @Validated({Marker.OnCreate.class})
     public Item createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                           @Valid @RequestBody ItemDto itemDto) {
+                           @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
+        log.info("Получен запрос Post createItem");
         return itemService.create(itemDto, userId);
     }
 
+    //
     @PatchMapping("{id}")
     public Item updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                           @RequestBody Item item, @PathVariable("id") long itemId) {
-        log.info("Получен запрос PUT item");
+                           @RequestBody ItemDto item, @PathVariable("id") long itemId) {
+        log.info("Получен запрос Patch updateItem");
         return itemService.updateItem(item, userId, itemId);
     }
 

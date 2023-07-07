@@ -1,54 +1,50 @@
 package ru.practicum.shareit.user;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exeption.DataAlreadyExist;
+import ru.practicum.shareit.exeption.DataNotFoundException;
+import ru.practicum.shareit.user.model.UserDto;
+import ru.practicum.shareit.user.model.UserMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
-    private final InMemoryUserStorage userStorage;
+    @Qualifier("InMemory")
+    private final UserStorage userStorage;
 
     public User getUserById(Long userId) {
         return userStorage.getUserById(userId);
     }
 
-    public User create(User user) {
+    public User create(UserDto userDto) {
 
-        String email = user.getEmail();
-        ArrayList<User> listUser = new ArrayList<>(userStorage.getUsers().values());
-        List<String> listEmail = listUser.stream()
-                .map(user1 -> user1.getEmail())
-                .collect(Collectors.toList());
-        if (listEmail.contains(email)) {
-            throw new DataAlreadyExist("Данный email уже зарегистрирован");
-        }
-        return userStorage.create(user);
+        User newUser = UserMapper.toUser(userDto);
+        return userStorage.create(newUser);
     }
 
-    public User updateUser(User user, Long userId) {
-        User newUser = userStorage.getUserById(userId);
-        String truEmail = newUser.getEmail();
-        String email = user.getEmail();
-        ArrayList<User> listUser = new ArrayList<>(userStorage.getUsers().values());
-        List<String> listEmail = listUser.stream()
-                .map(user1 -> user1.getEmail())
-                .collect(Collectors.toList());
+    public User updateUser(UserDto userDto, Long userId) {
 
-        if (truEmail.equals(email)) {
-            userStorage.updateUser(createNewUser(user, newUser, userId));
-            return userStorage.getUserById(userId);
+        User newUser = UserMapper.toUser(userDto);
+
+        User user = userStorage.getUserById(userId);
+        if (user == null) {
+            throw new DataNotFoundException("User with id=" + newUser.getId() + " not found");
         }
 
-        if (listEmail.contains(email)) {
-            throw new DataAlreadyExist("Данный email уже зарегистрирован");
+        if (newUser.getName() == null) {
+            newUser.setName(user.getName());
         }
-        userStorage.updateUser(createNewUser(user, newUser, userId));
+        if (newUser.getEmail() == null) {
+            newUser.setEmail(user.getEmail());
+        }
+        newUser.setId(userId);
+        userStorage.updateUser(newUser);
+
+
         return userStorage.getUserById(userId);
     }
 

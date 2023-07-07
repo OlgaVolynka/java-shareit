@@ -1,12 +1,16 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Objects;
 
 /**
  * TODO Sprint add-controllers.
  */
 
-@Data
+@Getter
+@Setter
 public class Item {
 
     private long id;
@@ -15,14 +19,16 @@ public class Item {
     private Boolean available;
     private Long owner;
 
-    public Item(String name, String description, boolean available, Long owner) {
-
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id == item.id;
     }
 
-    public Item() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

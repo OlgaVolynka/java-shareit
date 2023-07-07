@@ -1,23 +1,27 @@
 package ru.practicum.shareit.item;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.ValidationException;
+import ru.practicum.shareit.exeption.WithoutXSharerUserId;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.InMemoryUserStorage;
+import ru.practicum.shareit.item.model.ItemMapper;
+import ru.practicum.shareit.user.UserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Qualifier("InMemory")
 public class ItemService {
 
-    private final InMemoryItemStorage itemStorage;
-    private final InMemoryUserStorage userStorage;
+    private final ItemStorage itemStorage;
+    private final UserStorage userStorage;
 
     public Item getItemById(Long userId) {
         itemStorage.getItemById(userId);
@@ -26,7 +30,12 @@ public class ItemService {
 
     public Item create(ItemDto itemDto, Long userId) {
 
-        Item item = new Item(itemDto.getName(), itemDto.getDescription(), itemDto.getAvailable(), userId);
+        if (userId == null) {
+            throw new WithoutXSharerUserId("Не указан id пользователя");
+        }
+
+        Item item = ItemMapper.toItem(itemDto);
+        item.setOwner(userId);
         checkItem(item);
 
         if (item.getAvailable() == false) {
@@ -35,8 +44,12 @@ public class ItemService {
         return itemStorage.create(item);
     }
 
-    public Item updateItem(Item item, long userId, long itemId) {
+    public Item updateItem(ItemDto itemDto, Long userId, long itemId) {
+        if (userId == null) {
+            throw new WithoutXSharerUserId("Не указан id пользователя");
+        }
 
+        Item item = ItemMapper.toItem(itemDto);
         item.setOwner(userId);
         item.setId(itemId);
         checkItem(item);

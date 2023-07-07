@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
-import lombok.Getter;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.item.model.Item;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Getter
+@Primary
+@Qualifier("InMemory")
 public class InMemoryItemStorage implements ItemStorage {
 
     private final Map<Long, Item> items = new HashMap<>();
@@ -20,7 +22,6 @@ public class InMemoryItemStorage implements ItemStorage {
     public Long countId() {
         return ++id;
     }
-
 
     @Override
     public List<Item> findAll() {

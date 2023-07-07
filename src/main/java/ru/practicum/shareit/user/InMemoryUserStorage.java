@@ -1,16 +1,21 @@
 package ru.practicum.shareit.user;
 
-import lombok.Getter;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+import ru.practicum.shareit.exeption.DataAlreadyExist;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@Repository
-@Getter
+
+@Component
+@Primary
+@Qualifier("bd")
 public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Long, User> users = new HashMap<>();
@@ -27,7 +32,14 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User create(User user) {
-
+        String email = user.getEmail();
+        ArrayList<User> listUser = new ArrayList<>(users.values());
+        List<String> listEmail = listUser.stream()
+                .map(user1 -> user1.getEmail())
+                .collect(Collectors.toList());
+        if (listEmail.contains(email)) {
+            throw new DataAlreadyExist("Данный email:" + email + " уже зарегистрирован");
+        }
         user.setId(countId());
         users.put(user.getId(), user);
         return user;
@@ -35,6 +47,17 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public void updateUser(User user) {
+
+        String email = user.getEmail();
+
+        ArrayList<User> listUser = new ArrayList<>(users.values());
+        List<String> listEmail = listUser.stream()
+                .filter(user1 -> user1.getId() != user.getId())
+                .map(user1 -> user1.getEmail())
+                .collect(Collectors.toList());
+        if (email != null && listEmail != null && listEmail.contains(email)) {
+            throw new DataAlreadyExist("Данный email:" + email + " уже зарегистрирован");
+        }
         users.put(user.getId(), user);
     }
 
