@@ -40,4 +40,22 @@ public class ErrorHandler {
                 e.getMessage()
         );
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidatorThrowable(final Exception e) {
+        return new ErrorResponse(
+                "Ошибка Validated."
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleThrowable(final Throwable e) {
+        return new ErrorResponse(
+                "Произошла непредвиденная ошибка."
+        );
+    }
+
+
 }

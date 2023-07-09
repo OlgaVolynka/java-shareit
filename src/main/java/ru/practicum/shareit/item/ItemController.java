@@ -43,7 +43,7 @@ public class ItemController {
     //
     @PatchMapping("{id}")
     public Item updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                           @RequestBody ItemDto item, @PathVariable("id") long itemId) {
+                           @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item, @PathVariable("id") long itemId) {
         log.info("Получен запрос Patch updateItem");
         return itemService.updateItem(item, userId, itemId);
     }

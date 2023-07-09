@@ -43,8 +43,6 @@ public class UserService {
         }
         newUser.setId(userId);
         userStorage.updateUser(newUser);
-
-
         return userStorage.getUserById(userId);
     }
 
@@ -56,10 +54,4 @@ public class UserService {
         return userStorage.findAll();
     }
 
-    private User createNewUser(User user, User newUser, Long userId) {
-        newUser.setId(userId);
-        if (user.getEmail() != null) newUser.setEmail(user.getEmail());
-        if (user.getName() != null) newUser.setName(user.getName());
-        return newUser;
-    }
 }

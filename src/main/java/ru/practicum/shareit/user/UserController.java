@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public User updateUser(@RequestBody UserDto user, @PathVariable("id") Long userId) {
+    public User updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user, @PathVariable("id") Long userId) {
         log.info("Получен запрос Patch user");
         return userService.updateUser(user, userId);
     }
