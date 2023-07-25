@@ -45,13 +45,13 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    public List<Booking> getOwnerById(@RequestHeader("X-Sharer-User-Id") Long userId,@RequestParam(defaultValue = "ALL") String state) {
+    public List<Booking> getOwnerById(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(defaultValue = "ALL") String state) {
         log.info("Получен запрос GET allUsers");
         return bookingService.getBookingsOwner(userId, state);
     }
 
     @GetMapping
-    public List<Booking> getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(defaultValue = "ALL")String state ) {
+    public List<Booking> getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(defaultValue = "ALL") String state) {
         log.info("Получен запрос GET allUsers");
         return bookingService.getBookings(userId, state);
     }

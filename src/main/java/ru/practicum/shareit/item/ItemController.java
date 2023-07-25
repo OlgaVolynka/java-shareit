@@ -9,7 +9,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comments;
 import ru.practicum.shareit.item.model.Item;
 
-import javax.inject.Qualifier;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -44,7 +43,6 @@ public class ItemController {
         return itemService.create(itemDto, userId);
     }
 
-    //
     @PatchMapping("{id}")
     public Item updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                            @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item, @PathVariable("id") long itemId) {
@@ -67,7 +65,6 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public Comments getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId, @RequestBody @Valid Comments comments) {
         log.info("Получен запрос Past comment");
-        // return null;
         return itemService.getItemCommentsById(userId, itemId, comments);
     }
 }

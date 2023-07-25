@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingRequestForItemDto {
-    private Long Id;
+    private Long id;
     private Long bookerId;
 }

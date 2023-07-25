@@ -24,7 +24,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
-    private Long Id;
+    private Long id;
     @Column(name = "start_time")
     private LocalDateTime start;
     @Column(name = "end_time")
@@ -44,12 +44,12 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(Id, booking.Id);
+        return Objects.equals(id, booking.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 }
 
