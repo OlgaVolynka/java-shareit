@@ -6,8 +6,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Marker;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Comments;
 import ru.practicum.shareit.item.model.Item;
 
+import javax.inject.Qualifier;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -18,10 +21,11 @@ import java.util.List;
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
 public class ItemController {
+
     private final ItemService itemService;
 
     @GetMapping
-    public List<Item> findAll(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Получен запрос GET allUsers");
         return itemService.findAll(userId);
     }
@@ -34,8 +38,8 @@ public class ItemController {
 
     @PostMapping
     @Validated({Marker.OnCreate.class})
-    public Item createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                           @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
+    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+                              @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
         log.info("Получен запрос Post createItem");
         return itemService.create(itemDto, userId);
     }
@@ -49,14 +53,21 @@ public class ItemController {
     }
 
     @GetMapping("{id}")
-    public Item getItemById(@PathVariable("id") Long userId) {
+    public ItemDto getItemById(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable("id") Long itemId) {
         log.info("Получен запрос GET item by id");
-        return itemService.getItemById(userId);
+        return itemService.getItemById(userId, itemId);
     }
 
     @DeleteMapping("{id}")
     public void deleteItemById(@PathVariable("id") Long userId) {
         log.info("Получен запрос Delete item by id");
         itemService.deleteItemById(userId);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public Comments getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId, @RequestBody @Valid Comments comments) {
+        log.info("Получен запрос Past comment");
+        // return null;
+        return itemService.getItemCommentsById(userId, itemId, comments);
     }
 }

@@ -13,4 +13,12 @@ public final class UserMapper {
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
         return user;
     }
+
+    public static UserDto toUserDto(User newUser) {
+        UserDto newUser2 = new UserDto();
+        newUser2.setId(newUser.getId());
+        newUser2.setName(newUser.getName());
+        newUser2.setEmail(newUser.getEmail());
+        return newUser2;
+    }
 }

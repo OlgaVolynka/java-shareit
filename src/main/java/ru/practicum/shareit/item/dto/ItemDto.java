@@ -3,9 +3,12 @@ package ru.practicum.shareit.item.dto;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.Marker;
+import ru.practicum.shareit.booking.model.BookingRequestForItemDto;
+import ru.practicum.shareit.item.model.Comments;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,6 +25,9 @@ public class ItemDto {
     private String description;
     @NotNull(groups = Marker.OnCreate.class)
     private Boolean available;
+    private BookingRequestForItemDto lastBooking;
+    private BookingRequestForItemDto nextBooking;
+    private List<Comments> comments;
 
     @Override
     public boolean equals(Object o) {
