@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 public class BookingRequestDto {
 
-    private Long Id;
+    private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
     private Item item;

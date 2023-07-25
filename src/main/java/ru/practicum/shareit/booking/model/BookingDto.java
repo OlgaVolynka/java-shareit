@@ -13,7 +13,7 @@ import java.util.Objects;
 @Setter
 public class BookingDto {
 
-    private Long Id;
+    private Long id;
     @NotNull(groups = Marker.OnCreate.class)
     @Future(groups = Marker.OnCreate.class)
     private LocalDateTime start;
@@ -29,11 +29,11 @@ public class BookingDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookingDto that = (BookingDto) o;
-        return Objects.equals(Id, that.Id);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 }
