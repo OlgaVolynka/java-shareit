@@ -27,7 +27,7 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
 
     @Override
-    public BookingRequestDto create(BookingDto bookingDto, Long userId) {
+    public BookingRequestDto create(BookingDto bookingDto, long userId) {
         Booking booking = BookingMapper.toBooking(bookingDto);
 
         if (bookingDto.getStart().isAfter(bookingDto.getEnd()) || bookingDto.getStart().isEqual(bookingDto.getEnd())) {
@@ -57,7 +57,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateStatus(Long userId, Long bookingId, String approved) {
+    public Booking updateStatus(long userId, long bookingId, String approved) {
 
 
         checkUser(userId);

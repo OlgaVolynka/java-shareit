@@ -7,9 +7,9 @@ import ru.practicum.shareit.booking.model.BookingRequestDto;
 import java.util.List;
 
 public interface BookingService {
-    BookingRequestDto create(BookingDto booking, Long userId);
+    BookingRequestDto create(BookingDto booking, long userId);
 
-    Booking updateStatus(Long userId, Long bookingId, String approved);
+    Booking updateStatus(long userId, long bookingId, String approved);
 
     BookingRequestDto findById(Long userId, Long bookingId);
 
