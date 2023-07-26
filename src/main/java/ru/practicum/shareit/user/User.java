@@ -22,7 +22,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private long id;
 
     @Column(name = "email")
     @NotNull
