@@ -57,7 +57,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateStatus(Long userId, Long bookingId, String approved) {
+    public Booking updateStatus(long userId, Long bookingId, String approved) {
 
 
         checkUser(userId);

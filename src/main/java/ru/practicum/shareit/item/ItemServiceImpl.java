@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
 
     @Override
-    public ItemDto getItemById(Long userId, Long itemId) {
+    public ItemDto getItemById(long userId, Long itemId) {
         checkUser(userId);
         Optional<Item> item = itemRepository.findById(itemId);
 

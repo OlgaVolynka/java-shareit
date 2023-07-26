@@ -7,7 +7,7 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.List;
 
 interface ItemService {
-    ItemDto getItemById(Long userId, Long itemId);
+    ItemDto getItemById(long userId, Long itemId);
 
     ItemDto create(ItemDto itemDto, Long userId);
 

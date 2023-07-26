@@ -23,7 +23,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private long id;
     @Column(name = "name")
     @NotNull
     private String name;
@@ -38,14 +38,6 @@ public class Item {
     @JoinColumn(name = "item_id")
     @ToString.Exclude
     private List<Comments> comments;
-
-
-   /* @OneToMany
-    @JoinColumn (name = "item_id")
-    @ToString.Exclude
-    private Set<Booking> bookings;
-
- */
 
     @Override
     public boolean equals(Object o) {
