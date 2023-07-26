@@ -158,7 +158,7 @@ public class BookingServiceImpl implements BookingService {
             throw new DataNotFoundException("Не найден id бронирования");
         }
 
-        if (userId != bookingRepository.getReferenceById(bookingId).getItem().getOwner() &
+        if (userId != bookingRepository.getReferenceById(bookingId).getItem().getOwner() &&
                 userId != bookingRepository.getReferenceById(bookingId).getBooker().getId()) {
             throw new DataNotFoundException("У вас нет доступа к этим данным");
         }
