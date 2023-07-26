@@ -11,7 +11,7 @@ public interface BookingService {
 
     Booking updateStatus(Long userId, Long bookingId, String approved);
 
-    BookingRequestDto findById(Long userId, Long bookingId);
+    BookingRequestDto findById(long userId, long bookingId);
 
     List<Booking> getBookings(Long bookerId, String status);
 

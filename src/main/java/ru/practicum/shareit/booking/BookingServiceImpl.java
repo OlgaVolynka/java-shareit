@@ -152,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingRequestDto findById(Long userId, Long bookingId) {
+    public BookingRequestDto findById(long userId, long bookingId) {
 
         if (bookingRepository.findAllById(Collections.singleton(bookingId)).isEmpty()) {
             throw new DataNotFoundException("Не найден id бронирования");
