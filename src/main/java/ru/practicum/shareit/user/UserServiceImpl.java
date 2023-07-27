@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.user.model.UserDto;
@@ -16,10 +18,12 @@ import java.util.Optional;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public UserDto getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
@@ -36,17 +40,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
-    public User create(UserDto userDto) {
+    public UserDto create(UserDto userDto) {
 
         try {
             User newUser = UserMapper.toUser(userDto);
-            return userRepository.save(newUser);
+            return UserMapper.toUserDto(userRepository.save(newUser));
         } catch (DataIntegrityViolationException e) {
             throw new ValidationException("неверно указан пользователь");
         }
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
 
@@ -73,13 +79,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
+    @Transactional
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDto> findAll() {
+        return UserMapper.toListUserDto(userRepository.findAll());
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
+
 public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {
@@ -16,7 +17,6 @@ public class ItemMapper {
         itemDto.setDescription(item.getDescription());
         itemDto.setId(item.getId());
         itemDto.setAvailable(item.getAvailable());
-        itemDto.setComments(item.getComments());
         itemDto.setComments(item.getComments());
         return itemDto;
     }
@@ -34,8 +34,6 @@ public class ItemMapper {
         List<ItemDto> itemDto = items.stream()
                 .map(item -> toItemDto(item))
                 .collect(Collectors.toList());
-
         return itemDto;
-
     }
 }

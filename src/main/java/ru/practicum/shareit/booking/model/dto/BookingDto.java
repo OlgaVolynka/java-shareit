@@ -1,16 +1,14 @@
-package ru.practicum.shareit.booking.model;
+package ru.practicum.shareit.booking.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import ru.practicum.shareit.Marker;
+import ru.practicum.shareit.booking.model.Status;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 public class BookingDto {
 
     private Long id;
@@ -23,17 +21,4 @@ public class BookingDto {
     @NotNull(groups = Marker.OnCreate.class)
     private Long itemId;
     private Status status;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookingDto that = (BookingDto) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

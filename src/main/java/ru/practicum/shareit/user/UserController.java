@@ -21,13 +21,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
         log.info("Получен запрос GET users");
         return userService.findAll();
     }
 
     @PostMapping
-    public User create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
+    public UserDto create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
         log.info("Получен запрос POST user");
         return userService.create(user);
     }

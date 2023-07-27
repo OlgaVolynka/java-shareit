@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingRequestForItemDto;
+import ru.practicum.shareit.booking.model.dto.BookingRequestForItemDto;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.UnavalibleException;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
@@ -36,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentsRepository commentsRepository;
     private final BookingRepository bookingRepository;
 
+    @Transactional
     @Override
     public ItemDto getItemById(long userId, Long itemId) {
         checkUser(userId);
@@ -59,6 +62,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Transactional
     @Override
     public ItemDto create(ItemDto itemDto, Long userId) {
 
@@ -74,8 +78,9 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(newItem);
     }
 
+    @Transactional
     @Override
-    public Item updateItem(ItemDto itemDto, long userId, long itemId) {
+    public ItemDto updateItem(ItemDto itemDto, long userId, long itemId) {
         checkUser(userId);
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(userId);
@@ -93,9 +98,10 @@ public class ItemServiceImpl implements ItemService {
         if (item.getDescription() != null) oldItem.setDescription(item.getDescription());
         if (item.getAvailable() != null) oldItem.setAvailable(item.getAvailable());
 
-        return itemRepository.save(oldItem);
+        return ItemMapper.toItemDto(itemRepository.save(oldItem));
     }
 
+    @Transactional
     @Override
     public void deleteItemById(Long itemId) {
         itemRepository.deleteById(itemId);
@@ -113,10 +119,11 @@ public class ItemServiceImpl implements ItemService {
         return itemDtos;
     }
 
+    @Transactional
     @Override
-    public List<Item> search(String text) {
+    public List<ItemDto> search(String text) {
         if (text.isBlank()) return new ArrayList<>();
-        return itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text);
+        return ItemMapper.toListItemDto(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text));
     }
 
     private void checkUser(Long userId) {
@@ -146,6 +153,7 @@ public class ItemServiceImpl implements ItemService {
         return itemDto;
     }
 
+    @Transactional
     @Override
     public Comments getItemCommentsById(Long userId, Long itemId, Comments comments) {
 

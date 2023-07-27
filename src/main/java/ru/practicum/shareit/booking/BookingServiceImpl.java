@@ -6,12 +6,16 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.*;
+import ru.practicum.shareit.booking.model.dto.BookingDto;
+import ru.practicum.shareit.booking.model.dto.BookingRequestDto;
 import ru.practicum.shareit.exeption.BookingTimeException;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.user.UserRepository;
+
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -20,19 +24,18 @@ import java.util.List;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
+    @Transactional
     @Override
     public BookingRequestDto create(BookingDto bookingDto, long userId) {
+        checkDate(bookingDto);
         Booking booking = BookingMapper.toBooking(bookingDto);
-
-        if (bookingDto.getStart().isAfter(bookingDto.getEnd()) || bookingDto.getStart().isEqual(bookingDto.getEnd())) {
-            throw new BookingTimeException("Некорректно указаны даты бронирования");
-        }
 
         if (itemRepository.findAllById(Collections.singleton(bookingDto.getItemId())).isEmpty()) {
             throw new DataNotFoundException("Не найден id предмета");
@@ -56,8 +59,9 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
+    @Transactional
     @Override
-    public Booking updateStatus(long userId, Long bookingId, String approved) {
+    public BookingRequestDto updateStatus(long userId, Long bookingId, String approved) {
 
 
         checkUser(userId);
@@ -86,60 +90,63 @@ public class BookingServiceImpl implements BookingService {
             booking.setStatus(Status.REJECTED);
         }
 
-        return bookingRepository.save(booking);
+        return BookingMapper.toBookingReqwDto(bookingRepository.save(booking));
     }
 
+    @Transactional
     @Override
-    public List<Booking> getBookings(Long bookerId, String status) {
+    public List<BookingRequestDto> getBookings(Long bookerId, String status) {
         checkUser(bookerId);
 
         Sort sort = Sort.by("start").descending();
 
         switch (status) {
             case "ALL":
-                return bookingRepository.findByBookerId(bookerId, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findByBookerId(bookerId, sort));
 
             case "CURRENT":
-                return bookingRepository.findAllByBooker_IdAndEndAfterAndStartBefore(bookerId, LocalDateTime.now(), LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByBooker_IdAndEndAfterAndStartBefore(bookerId, LocalDateTime.now(), LocalDateTime.now(), sort));
 
             case "PAST":
-                return bookingRepository.findAllByBooker_IdAndEndBefore(bookerId, LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByBooker_IdAndEndBefore(bookerId, LocalDateTime.now(), sort));
             case "FUTURE":
-                return bookingRepository.findAllByBooker_IdAndStartAfter(bookerId, LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByBooker_IdAndStartAfter(bookerId, LocalDateTime.now(), sort));
             case "WAITING":
-                return bookingRepository.findAllByBooker_IdAndStatus(bookerId, Status.WAITING, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByBooker_IdAndStatus(bookerId, Status.WAITING, sort));
             case "REJECTED":
-                return bookingRepository.findAllByBooker_IdAndStatus(bookerId, Status.REJECTED, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByBooker_IdAndStatus(bookerId, Status.REJECTED, sort));
             default:
                 throw new UnavalibleException("Unknown state: " + status);
         }
     }
 
+    @Transactional
     @Override
-    public List<Booking> getBookingsOwner(Long bookerId, String status) {
+    public List<BookingRequestDto> getBookingsOwner(Long bookerId, String status) {
         checkUser(bookerId);
 
         Sort sort = Sort.by("start").descending();
 
         switch (status) {
             case "ALL":
-                return bookingRepository.findAllByItem_Owner(bookerId, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_Owner(bookerId, sort));
 
             case "CURRENT":
-                return bookingRepository.findAllByItem_OwnerAndEndAfterAndStartBefore(bookerId, LocalDateTime.now(), LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_OwnerAndEndAfterAndStartBefore(bookerId, LocalDateTime.now(), LocalDateTime.now(), sort));
 
             case "PAST":
-                return bookingRepository.findAllByItem_OwnerAndEndBefore(bookerId, LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_OwnerAndEndBefore(bookerId, LocalDateTime.now(), sort));
             case "FUTURE":
-                return bookingRepository.findAllByItem_OwnerAndStartAfter(bookerId, LocalDateTime.now(), sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_OwnerAndStartAfter(bookerId, LocalDateTime.now(), sort));
             case "WAITING":
-                return bookingRepository.findAllByItem_OwnerAndStatus(bookerId, Status.WAITING, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_OwnerAndStatus(bookerId, Status.WAITING, sort));
             case "REJECTED":
-                return bookingRepository.findAllByItem_OwnerAndStatus(bookerId, Status.REJECTED, sort);
+                return BookingMapper.toListBookingDto(bookingRepository.findAllByItem_OwnerAndStatus(bookerId, Status.REJECTED, sort));
             default:
                 throw new UnavalibleException("Unknown state: " + status);
         }
     }
+
 
     private void checkUser(Long userId) {
         if (userId == null) {
@@ -148,6 +155,12 @@ public class BookingServiceImpl implements BookingService {
 
         if (userRepository.findAllById(Collections.singleton(userId)).isEmpty()) {
             throw new DataNotFoundException("Не найден id пользователя");
+        }
+    }
+
+    private void checkDate(BookingDto bookingDto) {
+        if (bookingDto.getStart().isAfter(bookingDto.getEnd()) || bookingDto.getStart().isEqual(bookingDto.getEnd())) {
+            throw new BookingTimeException("Некорректно указаны даты бронирования");
         }
     }
 
