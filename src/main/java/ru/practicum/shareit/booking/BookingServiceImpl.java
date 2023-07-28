@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
         return BookingMapper.toBookingReqwDto(bookingRepository.save(booking));
     }
 
-    @Transactional
+
     @Override
     public List<BookingRequestDto> getBookings(Long bookerId, String status) {
         checkUser(bookerId);
@@ -120,7 +120,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    @Transactional
+
     @Override
     public List<BookingRequestDto> getBookingsOwner(Long bookerId, String status) {
         checkUser(bookerId);

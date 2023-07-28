@@ -5,8 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.Marker;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Comments;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -42,28 +43,28 @@ public class ItemController {
         return itemService.create(itemDto, userId);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                               @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item, @PathVariable("id") long itemId) {
         log.info("Получен запрос Patch updateItem");
         return itemService.updateItem(item, userId, itemId);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ItemDto getItemById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("id") Long itemId) {
         log.info("Получен запрос GET item by id");
         return itemService.getItemById(userId, itemId);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteItemById(@PathVariable("id") Long userId) {
         log.info("Получен запрос Delete item by id");
         itemService.deleteItemById(userId);
     }
 
     @PostMapping("/{itemId}/comment")
-    public Comments getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId, @RequestBody @Valid Comments comments) {
+    public CommentRequestDto getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId, @RequestBody @Valid CommentDto comments) {
         log.info("Получен запрос Past comment");
-        return itemService.getItemCommentsById(userId, itemId, comments);
+        return itemService.createItemCommentsById(userId, itemId, comments);
     }
 }

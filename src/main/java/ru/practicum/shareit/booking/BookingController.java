@@ -29,14 +29,14 @@ public class BookingController {
         return bookingService.create(booking, userId);
     }
 
-    @PatchMapping("{bookingId}")
+    @PatchMapping("/{bookingId}")
     public BookingRequestDto updateBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @PathVariable("bookingId") Long bookingId, String approved) {
         log.info("Получен запрос Patch updateBooking");
         return bookingService.updateStatus(userId, bookingId, approved);
     }
 
-    @GetMapping("{bookingId}")
+    @GetMapping("/{bookingId}")
     public BookingRequestDto findById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("bookingId") Long bookingId) {
         log.info("Получен запрос GET allUsers");
         return bookingService.findById(userId, bookingId);

@@ -13,11 +13,10 @@ import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.exeption.WithoutXSharerUserId;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Comments;
-import ru.practicum.shareit.item.model.CommentsRepository;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.ItemMapper;
+import ru.practicum.shareit.item.model.*;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
@@ -38,7 +37,6 @@ public class ItemServiceImpl implements ItemService {
     private final CommentsRepository commentsRepository;
     private final BookingRepository bookingRepository;
 
-    @Transactional
     @Override
     public ItemDto getItemById(long userId, Long itemId) {
         checkUser(userId);
@@ -119,7 +117,6 @@ public class ItemServiceImpl implements ItemService {
         return itemDtos;
     }
 
-    @Transactional
     @Override
     public List<ItemDto> search(String text) {
         if (text.isBlank()) return new ArrayList<>();
@@ -155,16 +152,17 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public Comments getItemCommentsById(Long userId, Long itemId, Comments comments) {
+    public CommentRequestDto createItemCommentsById(Long userId, Long itemId, CommentDto commentDto) {
 
         checkUser(userId);
         if (bookingRepository.findAllByBooker_IdAndItem_IdAndEndBefore(userId, itemId, LocalDateTime.now()).isEmpty()) {
             throw new UnavalibleException("Вы не можее оставить отзыв");
         }
+        Comments comments = CommentsMapper.toComments(commentDto);
         comments.setItemId(itemId);
         comments.setAuthorId(userId);
         comments.setAuthorName(userRepository.getReferenceById(userId).getName());
 
-        return commentsRepository.save(comments);
+        return CommentsMapper.toCommentsRequestDto(commentsRepository.save(comments));
     }
 }

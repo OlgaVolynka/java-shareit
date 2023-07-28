@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final UserRepository userRepository;
 
-    @Transactional
     @Override
     public UserDto getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
