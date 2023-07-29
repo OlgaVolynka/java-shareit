@@ -13,7 +13,6 @@ import java.util.List;
  * TODO Sprint add-controllers.
  */
 @RestController
-
 @RequestMapping(path = "/users")
 @Slf4j
 @RequiredArgsConstructor
@@ -22,25 +21,25 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
         log.info("Получен запрос GET users");
         return userService.findAll();
     }
 
     @PostMapping
-    public User create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
+    public UserDto create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
         log.info("Получен запрос POST user");
         return userService.create(user);
     }
 
     @PatchMapping("/{id}")
-    public User updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user, @PathVariable("id") Long userId) {
+    public UserDto updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user, @PathVariable("id") Long userId) {
         log.info("Получен запрос Patch user");
         return userService.updateUser(user, userId);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") Long userId) {
+    public UserDto getUserById(@PathVariable("id") Long userId) {
         log.info("Получен запрос GET user by id");
         return userService.getUserById(userId);
     }
