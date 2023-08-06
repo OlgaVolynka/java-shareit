@@ -78,6 +78,8 @@ class UserServiceImplTest {
 
         Long userId = 0L;
         User expectidUser = new User();
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(expectidUser));
+
         Mockito.when(userRepository.getReferenceById(userId)).thenReturn(expectidUser);
         Mockito.when(userRepository.save(expectidUser)).thenReturn(expectidUser);
         UserDto userDto = userService.updateUser(UserMapper.toUserDto(expectidUser), userId);
@@ -91,7 +93,7 @@ class UserServiceImplTest {
 
         Long userId = 0L;
         User expectidUser = new User();
-        Mockito.when(userRepository.getReferenceById(userId)).thenReturn(null);
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(DataNotFoundException.class, () -> userService.updateUser(UserMapper.toUserDto(expectidUser), userId));
 
@@ -102,6 +104,8 @@ class UserServiceImplTest {
 
         Long userId = 0L;
         User expectidUser = new User();
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(expectidUser));
+
 
         Mockito.when(userRepository.getReferenceById(userId)).thenReturn(expectidUser);
 
