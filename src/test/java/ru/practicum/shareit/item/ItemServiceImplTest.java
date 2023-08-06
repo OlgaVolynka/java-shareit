@@ -214,6 +214,18 @@ class ItemServiceImplTest {
     @Test
     void search() {
 
+        String text = "text";
+        Integer from1 = 0;
+        Integer size1 = 1;
+
+        Pageable page = PageRequest.of(from1, size1);
+
+        Mockito.when(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text, page)).thenReturn(List.of(new Item()));
+
+        List<ItemDto> itemDtoList = itemService.search(text, from1, size1);
+
+        assertEquals(itemDtoList.size(), ItemMapper.toListItemDto(List.of(new Item())).size());
+
 
     }
 
