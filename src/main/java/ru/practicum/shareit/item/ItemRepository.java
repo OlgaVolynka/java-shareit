@@ -12,8 +12,11 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     @Override
     Optional<Item> findById(Long id);
+
     List<Item> findAllByOwner(Long id, Pageable pageable);
+
     List<Item> findAllByOwner(Long id);
+
     List<Item> findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(String name, String description, Pageable pageable);
 
 }

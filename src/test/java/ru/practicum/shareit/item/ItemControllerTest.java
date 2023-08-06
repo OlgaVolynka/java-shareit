@@ -34,13 +34,13 @@ class ItemControllerTest {
 
         List<ItemDto> returnRequest = List.of(newItem);
 
-        Mockito.when(itemService.findAll( 1L, 0,1)).thenReturn(returnRequest);
+        Mockito.when(itemService.findAll(1L, 0, 1)).thenReturn(returnRequest);
         ResponseEntity<List<ItemDto>> response = itemController.findAll(1L, 0, 1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(returnRequest, response.getBody());
         assertNotNull(response);
 
-        Mockito.when(itemService.findAll( 1L, null, null)).thenReturn(returnRequest);
+        Mockito.when(itemService.findAll(1L, null, null)).thenReturn(returnRequest);
         ResponseEntity<List<ItemDto>> response2 = itemController.findAll(1L, null, null);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals(returnRequest, response2.getBody());
@@ -58,13 +58,13 @@ class ItemControllerTest {
 
         List<ItemDto> returnRequest = List.of(newItem);
 
-        Mockito.when(itemService.search( "text", 0,1)).thenReturn(returnRequest);
+        Mockito.when(itemService.search("text", 0, 1)).thenReturn(returnRequest);
         ResponseEntity<List<ItemDto>> response = itemController.search("text", 0, 1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(returnRequest, response.getBody());
         assertNotNull(response);
 
-        Mockito.when(itemService.search( "text", null, null)).thenReturn(returnRequest);
+        Mockito.when(itemService.search("text", null, null)).thenReturn(returnRequest);
         ResponseEntity<List<ItemDto>> response2 = itemController.search("text", null, null);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals(returnRequest, response2.getBody());
@@ -109,8 +109,8 @@ class ItemControllerTest {
         newItem.setName("Name");
         newItem.setAvailable(true);
         newItem.setDescription("Description");
-        Mockito.when(itemService.getItemById( 1L, 2L)).thenReturn(newItem);
-        ResponseEntity<ItemDto> response = itemController.getItemById(1L,  2L);
+        Mockito.when(itemService.getItemById(1L, 2L)).thenReturn(newItem);
+        ResponseEntity<ItemDto> response = itemController.getItemById(1L, 2L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(newItem, response.getBody());
         assertNotNull(response);
@@ -131,8 +131,8 @@ class ItemControllerTest {
         commentDto.setText("text");
         CommentRequestDto commentRequestDto = new CommentRequestDto();
 
-        Mockito.when(itemService.createItemCommentsById( 1L, 2L, commentDto)).thenReturn(commentRequestDto);
-        ResponseEntity<CommentRequestDto> response = itemController.getItemCommentsById(1L,  2L, commentDto);
+        Mockito.when(itemService.createItemCommentsById(1L, 2L, commentDto)).thenReturn(commentRequestDto);
+        ResponseEntity<CommentRequestDto> response = itemController.getItemCommentsById(1L, 2L, commentDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(commentRequestDto, response.getBody());
         assertNotNull(response);
