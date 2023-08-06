@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking.model;
 
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 
 import javax.annotation.processing.Generated;
@@ -27,12 +25,5 @@ public class QBooking extends EntityPathBase<Booking> {
         super(Booking.class, forVariable(variable));
     }
 
-    public QBooking(Path<? extends Booking> path) {
-        super(path.getType(), path.getMetadata());
-    }
-
-    public QBooking(PathMetadata metadata) {
-        super(Booking.class, metadata);
-    }
 }
 

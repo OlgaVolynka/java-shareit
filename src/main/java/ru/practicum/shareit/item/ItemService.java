@@ -15,9 +15,9 @@ interface ItemService {
 
     void deleteItemById(Long itemId);
 
-    List<ItemDto> findAll(Long userId);
+    List<ItemDto> findAll(Long userId, Integer from1, Integer size1);
 
-    List<ItemDto> search(String text);
+    List<ItemDto> search(String text, Integer from1, Integer size1);
 
     CommentRequestDto createItemCommentsById(Long userId, Long itemId, CommentDto comments);
 

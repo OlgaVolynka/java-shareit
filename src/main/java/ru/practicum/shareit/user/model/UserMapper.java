@@ -31,7 +31,5 @@ public final class UserMapper {
                 .collect(Collectors.toList());
 
         return userDto;
-
     }
-
 }

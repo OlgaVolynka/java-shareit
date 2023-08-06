@@ -30,13 +30,9 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) {
             throw new DataNotFoundException("Неверно указан пользователь");
         }
-        try {
-            User seweUser = userRepository.getReferenceById(userId);
-            return UserMapper.toUserDto(seweUser);
 
-        } catch (DataIntegrityViolationException e) {
-            throw new ValidationException("неверно указан пользователь");
-        }
+        User seweUser = userRepository.getReferenceById(userId);
+        return UserMapper.toUserDto(seweUser);
     }
 
     @Transactional
@@ -56,16 +52,16 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, Long userId) {
 
         User newUser = UserMapper.toUser(userDto);
-        User user = userRepository.getReferenceById(userId);
-        if (user == null) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
             throw new DataNotFoundException("User with id=" + newUser.getId() + " not found");
         }
-
+        User oldUser = userRepository.getReferenceById(userId);
         if (newUser.getName() == null) {
-            newUser.setName(user.getName());
+            newUser.setName(oldUser.getName());
         }
         if (newUser.getEmail() == null) {
-            newUser.setEmail(user.getEmail());
+            newUser.setEmail(oldUser.getEmail());
         }
         newUser.setId(userId);
 
@@ -84,7 +80,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
     }
 
-    @Transactional
     @Override
     public List<UserDto> findAll() {
         return UserMapper.toListUserDto(userRepository.findAll());
