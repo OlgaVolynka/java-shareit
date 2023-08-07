@@ -30,7 +30,7 @@ class UserControllerIT {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @MockBean
     private BookingServiceImpl bookingService;

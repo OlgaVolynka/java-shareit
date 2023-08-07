@@ -19,11 +19,10 @@ import java.util.Optional;
 @Primary
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
     @Autowired
     private final UserRepository userRepository;
 
-    @Override
     public UserDto getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
 
@@ -36,7 +35,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
     public UserDto create(UserDto userDto) {
 
         try {
@@ -48,7 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
 
         User newUser = UserMapper.toUser(userDto);
@@ -75,12 +72,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    @Override
+
     public List<UserDto> findAll() {
         return UserMapper.toListUserDto(userRepository.findAll());
     }

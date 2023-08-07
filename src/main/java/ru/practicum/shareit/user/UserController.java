@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
