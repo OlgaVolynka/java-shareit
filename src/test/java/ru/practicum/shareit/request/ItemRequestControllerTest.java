@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestForRequestDto;
 
@@ -28,12 +26,11 @@ class ItemRequestControllerTest {
     void createRequest() {
 
         RequestForRequestDto returnRequest = new RequestForRequestDto();
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
         requestDto.setDescription("новая ДТО");
         Mockito.when(requestService.create(requestDto, 1L)).thenReturn(returnRequest);
-        ResponseEntity<RequestForRequestDto> response = itemRequestController.createRequest(1L, requestDto);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(returnRequest, response.getBody());
+        RequestForRequestDto response = itemRequestController.createRequest(1L, requestDto);
+        assertEquals(returnRequest, response);
 
     }
 
@@ -44,9 +41,8 @@ class ItemRequestControllerTest {
 
 
         Mockito.when(requestService.findAll(1L)).thenReturn(returnRequest);
-        ResponseEntity<List<RequestForRequestDto>> response = itemRequestController.findAll(1L);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(returnRequest, response.getBody());
+        List<RequestForRequestDto> response = itemRequestController.findAll(1L);
+        assertEquals(returnRequest, response);
         assertNotNull(response);
 
     }
@@ -57,9 +53,8 @@ class ItemRequestControllerTest {
         RequestForRequestDto returnRequest = new RequestForRequestDto();
 
         Mockito.when(requestService.findById(1L, 2L)).thenReturn(returnRequest);
-        ResponseEntity<RequestForRequestDto> response = itemRequestController.findById(1L, 2L);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(returnRequest, response.getBody());
+        RequestForRequestDto response = itemRequestController.findById(1L, 2L);
+        assertEquals(returnRequest, response);
 
 
     }
@@ -70,9 +65,8 @@ class ItemRequestControllerTest {
         List<RequestForRequestDto> returnRequest = List.of(new RequestForRequestDto());
 
         Mockito.when(requestService.findAllWith(1L, 0, 1)).thenReturn(returnRequest);
-        ResponseEntity<List<RequestForRequestDto>> response = itemRequestController.findAllWith(1L, 0, 1);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(returnRequest, response.getBody());
+        List<RequestForRequestDto> response = itemRequestController.findAllWith(1L, 0, 1);
+        assertEquals(returnRequest, response);
         assertNotNull(response);
 
     }

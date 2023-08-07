@@ -1,30 +1,31 @@
 package ru.practicum.shareit.user.model;
 
 import org.junit.jupiter.api.Test;
-import ru.practicum.shareit.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class UserDtoTest {
+@JsonTest
+public class UserDtoTest {
+
+    @Autowired
+    private JacksonTester<UserDto> json;
 
     @Test
-    void getId() {
+    void testUserDto() throws Exception {
+        UserDto userDto = new UserDto(
+                1L,
+                "John",
+                "john.doe@mail.com"
+        );
 
-        UserDto user = new UserDto();
-        user.setEmail("email@email.ru");
-        user.setId(1L);
-        user.setName("name");
+        JsonContent<UserDto> result = json.write(userDto);
 
-        User user2 = new User();
-        user2.setId(1L);
-
-        String email = user.getEmail();
-        String name = user.getName();
-        Long id = user.getId();
-
-        assertEquals("email@email.ru", email);
-        assertEquals("name", name);
-        assertEquals(1L, id);
-
+        assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
+        assertThat(result).extractingJsonPathStringValue("$.name").isEqualTo("John");
+        assertThat(result).extractingJsonPathStringValue("$.email").isEqualTo("john.doe@mail.com");
     }
 }

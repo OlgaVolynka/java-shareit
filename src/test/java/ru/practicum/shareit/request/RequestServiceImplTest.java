@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.exeption.DataNotFoundException;
-import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestForRequestDto;
 import ru.practicum.shareit.user.User;
@@ -29,7 +28,6 @@ class RequestServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
-
     @InjectMocks
     private RequestServiceImpl requestService;
 
@@ -37,7 +35,7 @@ class RequestServiceImplTest {
     void create_whenUserFound() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
         Request request = RequestMapper.toRequest(requestDto);
         Long id = 1L;
 
@@ -55,7 +53,7 @@ class RequestServiceImplTest {
     void create_whenUserNotFound() {
 
 
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
 
         Long id = 1L;
 
@@ -68,7 +66,7 @@ class RequestServiceImplTest {
     void create_whenUserIdNull() {
 
 
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
 
         Long id = null;
 
@@ -81,7 +79,7 @@ class RequestServiceImplTest {
     void findAll() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
         Request request = RequestMapper.toRequest(requestDto);
         List<Request> requestList = List.of(request);
         Long id = 1L;
@@ -99,7 +97,7 @@ class RequestServiceImplTest {
     @Test
     void findById_WhenRequestFound() {
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
         Request request = RequestMapper.toRequest(requestDto);
         Long id = 1L;
 
@@ -132,7 +130,7 @@ class RequestServiceImplTest {
     void findAllWith_whenFromSizeCorrect() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto();
+        RequestDto requestDto = new RequestDto("description");
         Request request = RequestMapper.toRequest(requestDto);
         List<Request> requestList = List.of(request);
         Long id = 1L;
@@ -152,21 +150,4 @@ class RequestServiceImplTest {
 
 
     }
-
-    @Test
-    void findAllWith_whenFromSizeNotCorrect() {
-
-        User expectidUser = new User();
-        //  RequestDto requestDto = new RequestDto();
-        Long id = 1L;
-
-        int from1 = -1;
-        int size1 = -1;
-
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(expectidUser));
-
-        assertThrows(UnavalibleException.class, () -> requestService.findAllWith(id, from1, size1));
-    }
-
-
 }

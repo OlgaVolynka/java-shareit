@@ -8,13 +8,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exeption.DataNotFoundException;
-import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestForRequestDto;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,12 +74,6 @@ public class RequestServiceImpl {
 
         checkUser(userId);
         Sort sort = Sort.by("created").descending();
-
-        if (from1 == null || size1 == null) return new ArrayList<>();
-
-        if (from1 < 0 || size1 < 0) {
-            throw new UnavalibleException("не верно заданы параметры для вывода страницы");
-        }
 
         Pageable page = PageRequest.of(from1 / size1, size1, sort);
 

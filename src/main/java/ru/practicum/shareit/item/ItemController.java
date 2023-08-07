@@ -11,6 +11,8 @@ import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -20,46 +22,48 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/items")
 @RequiredArgsConstructor
+@Validated
 public class ItemController {
 
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<List<ItemDto>> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                 @RequestParam(required = false) Integer from,
-                                                 @RequestParam(required = false) Integer size) {
+    public List<ItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                 @RequestParam(defaultValue = "100") @Positive Integer size) {
         log.info("Получен запрос GET allUsers");
-        return ResponseEntity.ok(itemService.findAll(userId, from, size));
+        return itemService.findAll(userId, from, size);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<ItemDto>> search(@RequestParam String text,
-                                                @RequestParam(required = false) Integer from,
-                                                @RequestParam(required = false) Integer size) {
+                                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                @RequestParam(defaultValue = "100") @Positive Integer size) {
         log.info("Получен запрос на список вещей по запросу", text);
         return ResponseEntity.ok(itemService.search(text, from, size));
     }
 
     @PostMapping
     @Validated({Marker.OnCreate.class})
-    public ResponseEntity<ItemDto> createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                              @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
+    public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+                              @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
         log.info("Получен запрос Post createItem");
-        return ResponseEntity.ok(itemService.create(itemDto, userId));
+        return itemService.create(itemDto, userId);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ItemDto> updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                                              @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item, @PathVariable("id") long itemId) {
+    public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
+                              @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item,
+                              @PathVariable("id") long itemId) {
         log.info("Получен запрос Patch updateItem");
-        return ResponseEntity.ok(itemService.updateItem(item, userId, itemId));
+        return itemService.updateItem(item, userId, itemId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDto> getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                               @PathVariable("id") Long itemId) {
+    public ItemDto getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
+                               @PathVariable("id") Long itemId) {
         log.info("Получен запрос GET item by id");
-        return ResponseEntity.ok(itemService.getItemById(userId, itemId));
+        return itemService.getItemById(userId, itemId);
     }
 
     @DeleteMapping("/{id}")
@@ -69,10 +73,10 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<CommentRequestDto> getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                                 @PathVariable("itemId") Long itemId,
-                                                                 @RequestBody @Valid CommentDto comments) {
+    public CommentRequestDto getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                 @PathVariable("itemId") Long itemId,
+                                                 @RequestBody @Valid CommentDto comments) {
         log.info("Получен запрос Post comment");
-        return ResponseEntity.ok(itemService.createItemCommentsById(userId, itemId, comments));
+        return itemService.createItemCommentsById(userId, itemId, comments);
     }
 }

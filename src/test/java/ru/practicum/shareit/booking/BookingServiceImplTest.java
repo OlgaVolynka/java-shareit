@@ -372,19 +372,6 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsOwner_notCorrectPage() {
-
-        Long bookerId = userId;
-        String status = "ALL";
-        Integer from1 = 0;
-        Integer size1 = -1;
-        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(newUser));
-
-        assertThrows(UnavalibleException.class, () -> bookingService.getBookingsOwner(bookerId, status, from1, size1));
-
-    }
-
-    @Test
     void getBookings_statusCURRENT() {
 
         Long bookerId = userId;

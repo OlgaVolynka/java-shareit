@@ -1,33 +1,27 @@
 package ru.practicum.shareit.request.dto;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 
-import java.time.LocalDateTime;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@JsonTest
 class RequestDtoTest {
 
+    @Autowired
+    private JacksonTester<RequestDto> json;
+
     @Test
-    void getDescription() {
+    void testRequestDto() throws Exception {
+        RequestDto request = new RequestDto(
+                "description"
+        );
 
-        RequestDto request = new RequestDto();
+        JsonContent<RequestDto> result = json.write(request);
 
-        LocalDateTime data = LocalDateTime.now();
-
-        request.setCreated(data);
-        request.setDescription("Description");
-
-        LocalDateTime data1 = request.getCreated();
-        String description = request.getDescription();
-
-        assertEquals(data1, data);
-        assertEquals("Description", description);
-
-        assertEquals(data, data1);
-        assertEquals("Description", description);
-
-
+        assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("description");
     }
-
-  }
+}

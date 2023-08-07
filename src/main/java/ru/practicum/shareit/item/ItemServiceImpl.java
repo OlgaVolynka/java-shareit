@@ -105,16 +105,6 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> findAll(Long userId, Integer from1, Integer size1) {
         checkUser(userId);
 
-        if (from1 == null) {
-            from1 = 0;
-        }
-        if (size1 == null) {
-            size1 = itemRepository.findAllByOwner(userId).size();
-        }
-
-        if (from1 < 0 || size1 <= 0) {
-            throw new UnavalibleException("не верно заданы параметры для вывода страницы");
-        }
         Pageable page = PageRequest.of(from1, size1);
 
         List<Item> itemList = itemRepository.findAllByOwner(userId, page);
@@ -129,16 +119,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> search(String text, Integer from1, Integer size1) {
         if (text.isBlank()) return new ArrayList<>();
-        if (from1 == null) {
-            from1 = 0;
-        }
-        if (size1 == null) {
-            size1 = 100;
-        }
 
-        if (from1 < 0 || size1 <= 0) {
-            throw new UnavalibleException("не верно заданы параметры для вывода страницы");
-        }
         Pageable page = PageRequest.of(from1, size1);
 
         return ItemMapper.toListItemDto(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text, page));

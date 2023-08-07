@@ -103,17 +103,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingRequestDto> getBookings(Long bookerId, String status, Integer from1, Integer size1) {
         checkUser(bookerId);
 
-        if (from1 == null) {
-            from1 = 0;
-        }
-        if (size1 == null) {
-            size1 = bookingRepository.findByBookerId(bookerId).size();
-        }
-
-        if (from1 < 0 || size1 <= 0) {
-            throw new UnavalibleException("не верно заданы параметры для вывода страницы");
-        }
-
         Sort sort = Sort.by("start").descending();
         Pageable page = PageRequest.of(from1 / size1, size1, sort);
 
@@ -140,16 +129,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingRequestDto> getBookingsOwner(Long bookerId, String status, Integer from1, Integer size1) {
         checkUser(bookerId);
 
-        if (from1 == null) {
-            from1 = 0;
-        }
-        if (size1 == null) {
-            size1 = bookingRepository.findAllByItem_Owner(bookerId).size();
-        }
-
-        if (from1 < 0 || size1 <= 0) {
-            throw new UnavalibleException("не верно заданы параметры для вывода страницы");
-        }
         Sort sort = Sort.by("start").descending();
 
         Pageable page = PageRequest.of(from1 / size1, size1, sort);

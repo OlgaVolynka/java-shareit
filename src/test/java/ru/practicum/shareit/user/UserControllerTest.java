@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import ru.practicum.shareit.user.model.UserDto;
 
 import java.util.List;
@@ -28,9 +26,8 @@ class UserControllerTest {
     void findAll() {
         List<UserDto> listUser = List.of(new UserDto());
         Mockito.when(userService.findAll()).thenReturn(listUser);
-        ResponseEntity<List<UserDto>> response = userController.findAll();
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(listUser, response.getBody());
+        List<UserDto> response = userController.findAll();
+        assertEquals(listUser, response);
         assertNotNull(response);
     }
 
@@ -38,9 +35,8 @@ class UserControllerTest {
     void create() {
         UserDto newUser = new UserDto();
         Mockito.when(userService.create(new UserDto())).thenReturn(newUser);
-        ResponseEntity<UserDto> response = userController.create(new UserDto());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(newUser, response.getBody());
+        UserDto response = userController.create(new UserDto());
+        assertEquals(newUser, response);
         assertNotNull(response);
     }
 
@@ -50,9 +46,8 @@ class UserControllerTest {
         UserDto newUser = new UserDto();
         newUser.setId(1L);
         Mockito.when(userService.updateUser(new UserDto(), 1L)).thenReturn(newUser);
-        ResponseEntity<UserDto> response = userController.updateUser(new UserDto(), 1L);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(newUser, response.getBody());
+        UserDto response = userController.updateUser(new UserDto(), 1L);
+        assertEquals(newUser, response);
         assertNotNull(response);
 
     }
@@ -63,10 +58,9 @@ class UserControllerTest {
         UserDto newUser = new UserDto();
         newUser.setId(1L);
         Mockito.when(userService.getUserById(1L)).thenReturn(newUser);
-        ResponseEntity<UserDto> response = userController.getUserById(1L);
+        UserDto response = userController.getUserById(1L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(newUser, response.getBody());
+        assertEquals(newUser, response);
         assertNotNull(response);
 
     }
