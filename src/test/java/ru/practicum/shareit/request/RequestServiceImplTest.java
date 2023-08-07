@@ -35,7 +35,8 @@ class RequestServiceImplTest {
     void create_whenUserFound() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
         Request request = RequestMapper.toRequest(requestDto);
         Long id = 1L;
 
@@ -53,7 +54,8 @@ class RequestServiceImplTest {
     void create_whenUserNotFound() {
 
 
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
 
         Long id = 1L;
 
@@ -66,7 +68,8 @@ class RequestServiceImplTest {
     void create_whenUserIdNull() {
 
 
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
 
         Long id = null;
 
@@ -79,7 +82,8 @@ class RequestServiceImplTest {
     void findAll() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
         Request request = RequestMapper.toRequest(requestDto);
         List<Request> requestList = List.of(request);
         Long id = 1L;
@@ -97,7 +101,8 @@ class RequestServiceImplTest {
     @Test
     void findById_WhenRequestFound() {
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
         Request request = RequestMapper.toRequest(requestDto);
         Long id = 1L;
 
@@ -130,7 +135,8 @@ class RequestServiceImplTest {
     void findAllWith_whenFromSizeCorrect() {
 
         User expectidUser = new User();
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("Description");
         Request request = RequestMapper.toRequest(requestDto);
         List<Request> requestList = List.of(request);
         Long id = 1L;

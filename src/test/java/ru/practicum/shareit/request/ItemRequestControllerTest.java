@@ -26,7 +26,7 @@ class ItemRequestControllerTest {
     void createRequest() {
 
         RequestForRequestDto returnRequest = new RequestForRequestDto();
-        RequestDto requestDto = new RequestDto("description");
+        RequestDto requestDto = new RequestDto();
         requestDto.setDescription("новая ДТО");
         Mockito.when(requestService.create(requestDto, 1L)).thenReturn(returnRequest);
         RequestForRequestDto response = itemRequestController.createRequest(1L, requestDto);

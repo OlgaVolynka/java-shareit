@@ -16,11 +16,11 @@ class RequestDtoTest {
 
     @Test
     void testRequestDto() throws Exception {
-        RequestDto request = new RequestDto(
-                "description"
-        );
+        RequestDto requestDto = new RequestDto();
+        requestDto.setDescription("description");
 
-        JsonContent<RequestDto> result = json.write(request);
+
+        JsonContent<RequestDto> result = json.write(requestDto);
 
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("description");
     }
