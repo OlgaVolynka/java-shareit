@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long>, QuerydslPredicateExecutor<Booking> {
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBookerId(Long bookerId, Pageable pageable);
 
