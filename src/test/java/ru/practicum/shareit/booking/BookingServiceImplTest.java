@@ -117,8 +117,8 @@ class BookingServiceImplTest {
 
         bookingDto.setEnd(data.minusDays(2));
 
-        assertThrows(BookingTimeException.class, () -> bookingService.create(bookingDto, userId));
-
+        final BookingTimeException exception = assertThrows(BookingTimeException.class, () -> bookingService.create(bookingDto, userId));
+        assertEquals(exception.getMessage(), "Некорректно указаны даты бронирования");
     }
 
     @Test

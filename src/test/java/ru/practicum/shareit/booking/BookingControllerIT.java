@@ -13,6 +13,7 @@ import ru.practicum.shareit.booking.model.BookingMapper;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.model.dto.BookingDto;
 import ru.practicum.shareit.booking.model.dto.BookingRequestDto;
+import ru.practicum.shareit.exeption.BookingTimeException;
 import ru.practicum.shareit.item.ItemServiceImpl;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
@@ -24,7 +25,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
@@ -85,8 +88,23 @@ class BookingControllerIT {
 
     }
 
+    @SneakyThrows
     @Test
-    void updateBooking() {
+    void getUserById_BookingTimeException() {
+        Long userId = 1L;
+        BookingTimeException e = new BookingTimeException("massage");
+
+        Mockito.when(bookingService.findById(Mockito.anyLong(), Mockito.anyLong()))
+                .thenThrow(e);
+
+        mockMvc.perform(get("/bookings/{bookingId}", userId).header("X-Sharer-User-Id", userId))
+
+                .andDo(print())
+                .andExpect(status().is(400))
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
     }
 
     @Test
