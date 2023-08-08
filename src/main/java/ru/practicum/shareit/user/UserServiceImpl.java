@@ -49,10 +49,9 @@ public class UserServiceImpl {
     public UserDto updateUser(UserDto userDto, Long userId) {
 
         User newUser = UserMapper.toUser(userDto);
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new DataNotFoundException("User with id=" + newUser.getId() + " not found");
-        }
+
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
+
         User oldUser = userRepository.getReferenceById(userId);
         if (newUser.getName() == null) {
             newUser.setName(oldUser.getName());

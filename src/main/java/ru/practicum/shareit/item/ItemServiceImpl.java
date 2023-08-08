@@ -17,7 +17,6 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.*;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
@@ -85,6 +84,7 @@ public class ItemServiceImpl implements ItemService {
         if (userId != oldItem.getOwner()) {
             throw new DataNotFoundException("неверно указан id пользователя");
         }
+
         if (item.getOwner() == null) {
             throw new DataNotFoundException("Не указан id пользователя");
         }
@@ -125,16 +125,10 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toListItemDto(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text, page));
     }
 
-    private void checkUser(Long userId) {
-        if (userId == null) {
-            throw new DataNotFoundException("не указан id пользователя");
-        }
+    private void checkUser(long userId) {
 
-        Optional<User> user = userRepository.findById(userId);
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
 
-        if (user.isEmpty()) {
-            throw new DataNotFoundException("Не найден id пользователя");
-        }
     }
 
     private ItemDto setNextAndEndBooking(Long itemId, ItemDto itemDto) {

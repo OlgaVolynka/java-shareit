@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.model.Status;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-
 import java.time.LocalDateTime;
 
 @JsonTest
@@ -33,8 +32,8 @@ class BookingDtoTest {
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(result).extractingJsonPathNumberValue("$.itemId").isEqualTo(1);
         assertThat(result).extractingJsonPathStringValue("$.status").isEqualTo(String.valueOf(Status.APPROVED));
-        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo(String.valueOf(data));
-        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo(String.valueOf(data));
+        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo(data.toString());
+        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo(data.toString());
 
     }
 }

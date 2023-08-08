@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestForRequestDto;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.util.List;
@@ -44,16 +43,10 @@ public class RequestServiceImpl {
         return RequestMapper.toListRequestDto(requestRepository.findAllByRequestMarker_Id(userId, sort));
     }
 
-    private void checkUser(Long userId) {
-        if (userId == null) {
-            throw new DataNotFoundException("не указан id пользователя");
-        }
+    private void checkUser(long userId) {
 
-        Optional<User> user = userRepository.findById(userId);
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
 
-        if (user.isEmpty()) {
-            throw new DataNotFoundException("Не найден id пользователя");
-        }
     }
 
     public RequestForRequestDto findById(long userId, Long requestId) {

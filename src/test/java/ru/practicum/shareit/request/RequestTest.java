@@ -48,48 +48,4 @@ class RequestTest {
 
 
     }
-
-    @Test
-    void getId() {
-    }
-
-    @Test
-    void testEquals() {
-    }
-
-    @Test
-    void testHashCode() {
-    }
-
-    @Test
-    void getDescription() {
-    }
-
-    @Test
-    void getCreated() {
-    }
-
-    @Test
-    void getRequestMarker() {
-    }
-
-    @Test
-    void getItems() {
-    }
-
-    @Test
-    void setDescription() {
-    }
-
-    @Test
-    void setCreated() {
-    }
-
-    @Test
-    void setRequestMarker() {
-    }
-
-    @Test
-    void setItems() {
-    }
 }

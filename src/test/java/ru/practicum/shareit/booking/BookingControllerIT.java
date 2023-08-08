@@ -107,15 +107,4 @@ class BookingControllerIT {
 
     }
 
-    @Test
-    void findById() {
-    }
-
-    @Test
-    void getOwnerById() {
-    }
-
-    @Test
-    void getBookingById() {
-    }
 }

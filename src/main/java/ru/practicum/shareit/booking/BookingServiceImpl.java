@@ -17,13 +17,10 @@ import ru.practicum.shareit.exeption.BookingTimeException;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.item.ItemRepository;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Primary
@@ -41,12 +38,7 @@ public class BookingServiceImpl implements BookingService {
         checkDate(bookingDto);
         Booking booking = BookingMapper.toBooking(bookingDto);
 
-
-        Optional<Item> item = itemRepository.findById(bookingDto.getItemId());
-
-        if (item.isEmpty()) {
-            throw new DataNotFoundException("Не найден id предмета");
-        }
+        itemRepository.findById(bookingDto.getItemId()).orElseThrow(() -> new DataNotFoundException("Не найден id предмета"));
 
         if (!itemRepository.getReferenceById(bookingDto.getItemId()).getAvailable()) {
             throw new UnavalibleException("Товар уже занят");
@@ -151,16 +143,10 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private void checkUser(Long userId) {
-        if (userId == null) {
-            throw new DataNotFoundException("не указан id пользователя");
-        }
+    private void checkUser(long userId) {
 
-        Optional<User> user = userRepository.findById(userId);
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
 
-        if (user.isEmpty()) {
-            throw new DataNotFoundException("Не найден id пользователя");
-        }
     }
 
     private void checkDate(BookingDto bookingDto) {

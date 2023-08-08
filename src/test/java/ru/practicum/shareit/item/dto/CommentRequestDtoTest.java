@@ -1,15 +1,25 @@
 package ru.practicum.shareit.item.dto;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@JsonTest
 class CommentRequestDtoTest {
 
+    @Autowired
+    private JacksonTester<CommentRequestDto> json;
+
+
     @Test
-    void getId() {
+    void commentRequestDtoJsonTest() throws IOException {
 
         LocalDateTime data = LocalDateTime.now();
 
@@ -21,19 +31,15 @@ class CommentRequestDtoTest {
         comment.setAuthorName("AuthorName");
         comment.setId(1L);
 
-        String text = comment.getText();
-        LocalDateTime data1 = comment.getCreated();
-        Long authtorId = comment.getAuthorId();
-        long itemId = comment.getItemId();
-        String name = comment.getAuthorName();
-        Long id = comment.getId();
+        JsonContent<CommentRequestDto> result = json.write(comment);
 
-        assertEquals("text", text);
-        assertEquals(data, data1);
-        assertEquals(1L, authtorId);
-        assertEquals(1L, itemId);
-        assertEquals("AuthorName", name);
-        assertEquals(1L, id);
+        assertThat(result).extractingJsonPathStringValue("$.created").isEqualTo(data.toString());
+        assertThat(result).extractingJsonPathStringValue("$.text").isEqualTo("text");
+
+        assertThat(result).extractingJsonPathNumberValue("$.authorId").isEqualTo(1);
+        assertThat(result).extractingJsonPathNumberValue("$.itemId").isEqualTo(1);
+        assertThat(result).extractingJsonPathStringValue("$.authorName").isEqualTo("AuthorName");
+        assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
 
     }
 }

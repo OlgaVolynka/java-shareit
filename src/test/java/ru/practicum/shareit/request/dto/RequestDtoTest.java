@@ -19,7 +19,6 @@ class RequestDtoTest {
         RequestDto requestDto = new RequestDto();
         requestDto.setDescription("description");
 
-
         JsonContent<RequestDto> result = json.write(requestDto);
 
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("description");
