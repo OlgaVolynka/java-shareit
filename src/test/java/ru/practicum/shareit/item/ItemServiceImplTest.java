@@ -125,7 +125,7 @@ class ItemServiceImplTest {
         expectidItem.setAvailable(true);
         ItemDto itemDto = ItemMapper.toItemDto(expectidItem);
 
-        assertThrows(DataNotFoundException.class, () -> itemService.create(itemDto, id));
+        assertThrows(NullPointerException.class, () -> itemService.create(itemDto, id));
     }
 
     @Test

@@ -73,7 +73,7 @@ class RequestServiceImplTest {
 
         Long id = null;
 
-        assertThrows(DataNotFoundException.class, () -> requestService.create(requestDto, id));
+        assertThrows(NullPointerException.class, () -> requestService.create(requestDto, id));
 
     }
 

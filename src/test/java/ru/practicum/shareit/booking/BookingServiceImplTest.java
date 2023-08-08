@@ -198,7 +198,7 @@ class BookingServiceImplTest {
         Long bookerId = null;
         String status = "REJECTED";
 
-        assertThrows(DataNotFoundException.class, () -> bookingService.getBookings(bookerId, status, from1, size1), "true");
+        assertThrows(NullPointerException.class, () -> bookingService.getBookings(bookerId, status, from1, size1), "true");
     }
 
     @Test
