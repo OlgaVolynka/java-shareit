@@ -19,28 +19,22 @@ import java.util.Optional;
 @Primary
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
     @Autowired
     private final UserRepository userRepository;
 
-    @Override
     public UserDto getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
             throw new DataNotFoundException("Неверно указан пользователь");
         }
-        try {
-            User seweUser = userRepository.getReferenceById(userId);
-            return UserMapper.toUserDto(seweUser);
 
-        } catch (DataIntegrityViolationException e) {
-            throw new ValidationException("неверно указан пользователь");
-        }
+        User seweUser = userRepository.getReferenceById(userId);
+        return UserMapper.toUserDto(seweUser);
     }
 
     @Transactional
-    @Override
     public UserDto create(UserDto userDto) {
 
         try {
@@ -52,20 +46,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
 
         User newUser = UserMapper.toUser(userDto);
-        User user = userRepository.getReferenceById(userId);
-        if (user == null) {
-            throw new DataNotFoundException("User with id=" + newUser.getId() + " not found");
-        }
 
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
+
+        User oldUser = userRepository.getReferenceById(userId);
         if (newUser.getName() == null) {
-            newUser.setName(user.getName());
+            newUser.setName(oldUser.getName());
         }
         if (newUser.getEmail() == null) {
-            newUser.setEmail(user.getEmail());
+            newUser.setEmail(oldUser.getEmail());
         }
         newUser.setId(userId);
 
@@ -79,13 +71,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    @Transactional
-    @Override
+
     public List<UserDto> findAll() {
         return UserMapper.toListUserDto(userRepository.findAll());
     }

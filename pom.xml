@@ -95,11 +95,6 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-			<dependency>
-				<groupId>com.querydsl</groupId>
-				<artifactId>querydsl-jpa</artifactId>
-				<version>5.0.0</version>
-			</dependency>
 
 	</dependencies>
 	<build>
@@ -127,11 +122,7 @@
 					</execution>
 				</executions>
 				<dependencies>
-					<dependency>
-						<groupId>com.querydsl</groupId>
-						<artifactId>querydsl-apt</artifactId>
-						<version>5.0.0</version>
-					</dependency>
+
 				</dependencies>
 			</plugin>
 

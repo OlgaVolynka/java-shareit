@@ -13,6 +13,7 @@ import java.util.List;
  * TODO Sprint add-controllers.
  */
 @Data
+
 public class ItemDto {
 
     private Long id;
@@ -25,5 +26,6 @@ public class ItemDto {
     private BookingRequestForItemDto lastBooking;
     private BookingRequestForItemDto nextBooking;
     private List<Comments> comments;
+    private Long requestId;
 
 }

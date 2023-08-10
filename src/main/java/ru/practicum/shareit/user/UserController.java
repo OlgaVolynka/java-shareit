@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping
     public List<UserDto> findAll() {
@@ -33,7 +33,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserDto updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user, @PathVariable("id") Long userId) {
+    public UserDto updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user,
+                              @PathVariable("id") Long userId) {
         log.info("Получен запрос Patch user");
         return userService.updateUser(user, userId);
     }

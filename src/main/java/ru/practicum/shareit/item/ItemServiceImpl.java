@@ -2,17 +2,17 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.dto.BookingRequestForItemDto;
 import ru.practicum.shareit.booking.model.Status;
+import ru.practicum.shareit.booking.model.dto.BookingRequestForItemDto;
 import ru.practicum.shareit.exeption.DataNotFoundException;
 import ru.practicum.shareit.exeption.UnavalibleException;
 import ru.practicum.shareit.exeption.ValidationException;
-import ru.practicum.shareit.exeption.WithoutXSharerUserId;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -21,7 +21,6 @@ import ru.practicum.shareit.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,19 +44,15 @@ public class ItemServiceImpl implements ItemService {
         if (item.isEmpty()) {
             throw new DataNotFoundException("Неверно указан id вещи");
         }
-        try {
-            Item newItem = itemRepository.getReferenceById(itemId);
+        Item newItem = itemRepository.getReferenceById(itemId);
 
-            ItemDto returnItemDto = ItemMapper.toItemDto(newItem);
-            if (newItem.getOwner() != userId) {
-                return returnItemDto;
-            }
-            setNextAndEndBooking(itemId, returnItemDto);
+        ItemDto returnItemDto = ItemMapper.toItemDto(newItem);
+        if (newItem.getOwner() != userId) {
             return returnItemDto;
-        } catch (
-                DataIntegrityViolationException e) {
-            throw new ValidationException("неверно указан пользователь");
         }
+        setNextAndEndBooking(itemId, returnItemDto);
+        return returnItemDto;
+
     }
 
     @Transactional
@@ -89,8 +84,9 @@ public class ItemServiceImpl implements ItemService {
         if (userId != oldItem.getOwner()) {
             throw new DataNotFoundException("неверно указан id пользователя");
         }
+
         if (item.getOwner() == null) {
-            throw new WithoutXSharerUserId("Не указан id пользователя");
+            throw new DataNotFoundException("Не указан id пользователя");
         }
         if (item.getName() != null) oldItem.setName(item.getName());
         if (item.getDescription() != null) oldItem.setDescription(item.getDescription());
@@ -106,9 +102,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> findAll(Long userId) {
+    public List<ItemDto> findAll(Long userId, Integer from1, Integer size1) {
         checkUser(userId);
-        List<Item> itemList = itemRepository.findAllByOwner(userId);
+
+        Pageable page = PageRequest.of(from1, size1);
+
+        List<Item> itemList = itemRepository.findAllByOwner(userId, page);
         List<ItemDto> itemDtos = ItemMapper.toListItemDto(itemList);
         itemDtos.stream()
                 .map(itemDto -> setNextAndEndBooking(itemDto.getId(), itemDto))
@@ -118,18 +117,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String text) {
+    public List<ItemDto> search(String text, Integer from1, Integer size1) {
         if (text.isBlank()) return new ArrayList<>();
-        return ItemMapper.toListItemDto(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text));
+
+        Pageable page = PageRequest.of(from1, size1);
+
+        return ItemMapper.toListItemDto(itemRepository.findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text, page));
     }
 
-    private void checkUser(Long userId) {
-        if (userId == null) {
-            throw new DataNotFoundException("не указан id пользователя");
-        }
-        if (userRepository.findAllById(Collections.singleton(userId)).isEmpty()) {
-            throw new DataNotFoundException("Не найден id пользователя");
-        }
+    private void checkUser(long userId) {
+
+        userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("Не найден пользователь по id=" + userId));
+
     }
 
     private ItemDto setNextAndEndBooking(Long itemId, ItemDto itemDto) {

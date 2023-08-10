@@ -8,6 +8,8 @@ import ru.practicum.shareit.Marker;
 import ru.practicum.shareit.booking.model.dto.BookingDto;
 import ru.practicum.shareit.booking.model.dto.BookingRequestDto;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/bookings")
+@Validated
 public class BookingController {
 
     private final BookingService bookingService;
@@ -37,20 +40,27 @@ public class BookingController {
     }
 
     @GetMapping("/{bookingId}")
-    public BookingRequestDto findById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("bookingId") Long bookingId) {
+    public BookingRequestDto findById(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                      @PathVariable("bookingId") Long bookingId) {
         log.info("Получен запрос GET allUsers");
         return bookingService.findById(userId, bookingId);
     }
 
     @GetMapping("/owner")
-    public List<BookingRequestDto> getOwnerById(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(defaultValue = "ALL") String state) {
+    public List<BookingRequestDto> getOwnerById(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                @RequestParam(required = false, defaultValue = "ALL") String state,
+                                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                @RequestParam(defaultValue = "100") @Positive Integer size) {
         log.info("Получен запрос GET allUsers");
-        return bookingService.getBookingsOwner(userId, state);
+        return bookingService.getBookingsOwner(userId, state, from, size);
     }
 
     @GetMapping
-    public List<BookingRequestDto> getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(defaultValue = "ALL") String state) {
+    public List<BookingRequestDto> getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                  @RequestParam(defaultValue = "ALL") String state,
+                                                  @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                  @RequestParam(defaultValue = "100") @Positive Integer size) {
         log.info("Получен запрос GET allUsers");
-        return bookingService.getBookings(userId, state);
+        return bookingService.getBookings(userId, state, from, size);
     }
 }

@@ -38,6 +38,8 @@ public class Item {
     @JoinColumn(name = "item_id")
     @ToString.Exclude
     private List<Comments> comments;
+    @Column(name = "requests_id")
+    private Long requestId;
 
     @Override
     public boolean equals(Object o) {

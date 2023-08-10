@@ -23,6 +23,4 @@ public class CommentsMapper {
         commentRequestDto.setAuthorId(commentRequestDto.getAuthorId());
         return commentRequestDto;
     }
-
-
 }

@@ -7,35 +7,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exeption.model.ErrorResponse;
 
 @RestControllerAdvice
+
 public class ErrorHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler({DataNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handlePostNotFoundException(final DataNotFoundException e) {
+    public ErrorResponse handlePostNotFoundException(RuntimeException e) {
         return new ErrorResponse(
                 e.getMessage()
         );
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleDataAlreadyExist(final DataAlreadyExist e) {
-        return new ErrorResponse(
-                e.getMessage()
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleDataAlreadyExist(final WithoutXSharerUserId e) {
-        return new ErrorResponse(
-                e.getMessage()
-        );
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler({ValidationException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleDataBadRequest(final ValidationException e) {
+    public ErrorResponse handleDataBadRequest(RuntimeException e) {
+        return new ErrorResponse(
+                e.getMessage()
+        );
+    }
+
+    @ExceptionHandler(value = {UnavalibleException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse unavalibleException(RuntimeException e) {
         return new ErrorResponse(
                 e.getMessage()
         );
@@ -49,17 +42,10 @@ public class ErrorHandler {
         );
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleUnavalibleException(final UnavalibleException e) {
-        return new ErrorResponse(
-                e.getMessage()
-        );
-    }
 
-    @ExceptionHandler
+    @ExceptionHandler({BookingTimeException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBookingTimeException(final BookingTimeException e) {
+    public ErrorResponse handleBookingTimeException(RuntimeException e) {
         return new ErrorResponse(
                 e.getMessage()
         );
