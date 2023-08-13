@@ -26,9 +26,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
+    public Object create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
         log.info("Получен запрос POST user");
-        return userService.create(user);
+        return userService.create(user).getBody();
     }
 
     @PatchMapping("/{id}")
