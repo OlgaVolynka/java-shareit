@@ -1,12 +1,9 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
-import ru.practicum.shareit.Marker;
 import ru.practicum.shareit.booking.model.dto.BookingRequestForItemDto;
 import ru.practicum.shareit.item.model.Comments;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
