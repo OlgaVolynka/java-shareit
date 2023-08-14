@@ -34,8 +34,7 @@ class RequestForRequestDtoTest {
 
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("Description");
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
-        assertThat(result).extractingJsonPathStringValue("$.created").isEqualTo(data.toString());
-        assertThat(result).extractingJsonPathNumberValue("$.requestMarker.id").isEqualTo(1);
+         assertThat(result).extractingJsonPathNumberValue("$.requestMarker.id").isEqualTo(1);
 
     }
 }

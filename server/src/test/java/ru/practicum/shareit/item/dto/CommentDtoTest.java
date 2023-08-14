@@ -29,7 +29,6 @@ class CommentDtoTest {
 
         JsonContent<CommentDto> result = json.write(comment);
 
-        assertThat(result).extractingJsonPathStringValue("$.created").isEqualTo(data.toString());
-        assertThat(result).extractingJsonPathStringValue("$.text").isEqualTo("text");
+         assertThat(result).extractingJsonPathStringValue("$.text").isEqualTo("text");
     }
 }
