@@ -58,12 +58,7 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>gateway/src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
