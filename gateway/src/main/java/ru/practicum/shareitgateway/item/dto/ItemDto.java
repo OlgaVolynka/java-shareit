@@ -3,7 +3,7 @@ package ru.practicum.shareitgateway.item.dto;
 import lombok.Data;
 import ru.practicum.shareitgateway.Marker;
 import ru.practicum.shareitgateway.booking.dto.BookingRequestForItemDto;
-import ru.practicum.shareitgateway.item.Comments;
+import ru.practicum.shareitgateway.item.CommentsDto;
 
 
 import javax.validation.constraints.NotBlank;
@@ -27,7 +27,7 @@ public class ItemDto {
     private Boolean available;
     private BookingRequestForItemDto lastBooking;
     private BookingRequestForItemDto nextBooking;
-    private List<Comments> comments;
+    private List<CommentsDto> comments;
     private Long requestId;
 
 }

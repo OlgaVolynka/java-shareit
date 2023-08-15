@@ -21,32 +21,32 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Object> findAll() {
-        log.info("Получен запрос GET users");
+        log.info("Get all users");
         return userService.findAll();
     }
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Validated({Marker.OnCreate.class}) UserDto user) {
-        log.info("Получен запрос POST user");
+        log.info("Create user {}", user);
         return userService.create(user);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateUser(@RequestBody @Validated({Marker.OnUpdate.class}) UserDto user,
                                              @PathVariable("id") Long userId) {
-        log.info("Получен запрос Patch user");
+        log.info("Update user with id = {}", userId);
         return userService.updateUser(userId, user);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable("id") Long userId) {
-        log.info("Получен запрос GET user by id");
+        log.info("Get user with id = {}", userId);
         return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserById(@PathVariable("id") Long userId) {
-        log.info("Получен запрос Delete user by id");
+        log.info("Remove user with id = {}", userId);
         return userService.deleteUserById(userId);
     }
 }

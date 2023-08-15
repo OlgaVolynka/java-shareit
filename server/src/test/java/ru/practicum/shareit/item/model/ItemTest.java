@@ -33,10 +33,7 @@ class ItemTest {
         List<Comments> commentsList1 = item.getComments();
         Long idRequest = item.getRequestId();
 
-        int hash = item.hashCode();
-        int hash1 = Objects.hash(id);
 
-        assertEquals(hash, hash1);
 
         assertEquals(true, available);
         assertEquals("Description", description);

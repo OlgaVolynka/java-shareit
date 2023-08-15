@@ -1,14 +1,13 @@
 package ru.practicum.shareit.booking.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,6 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "bookings", schema = "public")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Booking {
 
     @Id
@@ -39,18 +39,6 @@ public class Booking {
     @Column(name = "status")
     private Status status;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Booking booking = (Booking) o;
-        return Objects.equals(id, booking.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
 
 

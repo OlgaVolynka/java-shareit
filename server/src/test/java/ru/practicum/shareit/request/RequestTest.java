@@ -35,10 +35,7 @@ class RequestTest {
         String description = request.getDescription();
         Long id = request.getId();
 
-        int hash = request.hashCode();
-        int hash1 = Objects.hash(id);
 
-        assertEquals(hash, hash1);
         assertEquals(set, set1);
         assertEquals(user, user1);
         assertEquals(data1, data);

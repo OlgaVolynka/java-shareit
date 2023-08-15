@@ -1,12 +1,12 @@
 package ru.practicum.shareit.item.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -14,6 +14,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "comments", schema = "public")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Comments {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,16 +34,4 @@ public class Comments {
     @Column(name = "author_Name")
     private String authorName;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Comments comments = (Comments) o;
-        return Objects.equals(id, comments.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

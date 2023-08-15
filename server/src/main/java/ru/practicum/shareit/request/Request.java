@@ -1,15 +1,14 @@
 package ru.practicum.shareit.request;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -19,6 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "requests", schema = "public")
 @RequiredArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Request {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -28,7 +28,7 @@ public class Request {
     private String description;
     @Column(name = "created_time")
     private LocalDateTime created;
-    //@Column (name = "requests_marker_id")
+
     @ManyToOne
     @JoinColumn(name = "requests_marker_id")
     private User requestMarker;
@@ -44,16 +44,5 @@ public class Request {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Request request = (Request) o;
-        return Objects.equals(id, request.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

@@ -24,21 +24,21 @@ public class BookingController {
     @PostMapping
     public BookingRequestDto createBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestBody BookingDto booking) {
-        log.info("Получен запрос Post booking");
+        log.info("Creating a booking {}, userId={}", booking, userId);
         return bookingService.create(booking, userId);
     }
 
     @PatchMapping("/{bookingId}")
     public BookingRequestDto updateBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @PathVariable("bookingId") Long bookingId, String approved) {
-        log.info("Получен запрос Patch updateBooking");
+        log.info("Approve booking with id =  {}", bookingId);
         return bookingService.updateStatus(userId, bookingId, approved);
     }
 
     @GetMapping("/{bookingId}")
     public BookingRequestDto findById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                       @PathVariable("bookingId") Long bookingId) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get booking {} of userId={}", bookingId, userId);
         return bookingService.findById(userId, bookingId);
     }
 
@@ -47,7 +47,8 @@ public class BookingController {
                                                 @RequestParam(required = false, defaultValue = "ALL") String state,
                                                 @RequestParam(defaultValue = "0") Integer from,
                                                 @RequestParam(defaultValue = "100") Integer size) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get booking with status {}, userId={}, from={}, size={}", state, userId, from, size);
+
         return bookingService.getBookingsOwner(userId, state, from, size);
     }
 
@@ -56,7 +57,8 @@ public class BookingController {
                                                   @RequestParam(defaultValue = "ALL") String state,
                                                   @RequestParam(defaultValue = "0") Integer from,
                                                   @RequestParam(defaultValue = "100") Integer size) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get booking with state {}, userId={}, from={}, size={}", state, userId, from, size);
+
         return bookingService.getBookings(userId, state, from, size);
     }
 }

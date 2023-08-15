@@ -29,21 +29,21 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<Object> createBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                 @RequestBody @Validated({Marker.OnCreate.class}) BookingDto booking) {
-        log.info("Получен запрос Post booking");
+        log.info("Creating a booking {}, userId={}", booking, userId);
         return bookingService.create(userId, booking);
     }
 
     @PatchMapping("/{bookingId}")
     public ResponseEntity<Object> updateBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                 @PathVariable("bookingId") Long bookingId, Boolean approved) {
-        log.info("Получен запрос Patch updateBooking");
+        log.info("Approve booking with id =  {}", bookingId);
         return bookingService.updateStatus(userId, bookingId, approved);
     }
 
     @GetMapping("/{bookingId}")
     public ResponseEntity<Object> findById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @PathVariable("bookingId") Long bookingId) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get booking {} of userId={}", bookingId, userId);
         return bookingService.findById(userId, bookingId);
     }
 

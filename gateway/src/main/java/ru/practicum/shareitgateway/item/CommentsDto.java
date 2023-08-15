@@ -1,16 +1,17 @@
 package ru.practicum.shareitgateway.item;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 
 @Getter
 @Setter
-public class Comments {
+@EqualsAndHashCode(of = "id")
+public class CommentsDto {
 
     private Long id;
 
@@ -27,16 +28,4 @@ public class Comments {
 
     private String authorName;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Comments comments = (Comments) o;
-        return Objects.equals(id, comments.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

@@ -28,7 +28,7 @@ public class ItemController {
     public List<ItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
                                  @RequestParam(defaultValue = "0") Integer from,
                                  @RequestParam(defaultValue = "100") Integer size) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get items for user with id = {} ", userId);
         return itemService.findAll(userId, from, size);
     }
 
@@ -36,7 +36,7 @@ public class ItemController {
     public ResponseEntity<List<ItemDto>> search(@RequestParam String text,
                                                 @RequestParam(defaultValue = "0") Integer from,
                                                 @RequestParam(defaultValue = "100") Integer size) {
-        log.info("Получен запрос на список вещей по запросу", text);
+        log.info("Find item with text = {}", text);
         return ResponseEntity.ok(itemService.search(text, from, size));
     }
 
@@ -44,7 +44,7 @@ public class ItemController {
     @Validated({Marker.OnCreate.class})
     public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                               @RequestBody ItemDto itemDto) {
-        log.info("Получен запрос Post createItem");
+        log.info("Create item for user with id = {} ", userId);
         return itemService.create(itemDto, userId);
     }
 
@@ -52,20 +52,20 @@ public class ItemController {
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                               @RequestBody ItemDto item,
                               @PathVariable("id") long itemId) {
-        log.info("Получен запрос Patch updateItem");
+        log.info("Update item with id = {} for user with id = {} ", itemId, userId);
         return itemService.updateItem(item, userId, itemId);
     }
 
     @GetMapping("/{id}")
     public ItemDto getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                @PathVariable("id") Long itemId) {
-        log.info("Получен запрос GET item by id");
+        log.info("Get item with id = {} for user with id = {} ", itemId, userId);
         return itemService.getItemById(userId, itemId);
     }
 
     @DeleteMapping("/{id}")
     public void deleteItemById(@PathVariable("id") Long userId) {
-        log.info("Получен запрос Delete item by id");
+        log.info("Remove item with id = {}", userId);
         itemService.deleteItemById(userId);
     }
 
@@ -73,7 +73,7 @@ public class ItemController {
     public CommentRequestDto getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                  @PathVariable("itemId") Long itemId,
                                                  @RequestBody CommentDto comments) {
-        log.info("Получен запрос Post comment");
+        log.info("Create comment item with id = {}", itemId);
         return itemService.createItemCommentsById(userId, itemId, comments);
     }
 }

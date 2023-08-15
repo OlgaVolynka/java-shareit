@@ -37,10 +37,6 @@ class BookingTest {
         LocalDateTime data1 = booking.getStart();
         LocalDateTime dataEnd1 = booking.getEnd();
 
-        int hash = booking.hashCode();
-        int hash1 = Objects.hash(id);
-
-        assertEquals(hash, hash1);
 
         assertEquals(item, item1);
         assertEquals(booker, booker1);

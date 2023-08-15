@@ -23,16 +23,13 @@ class UserTest {
         String name = user.getName();
         Long id = user.getId();
 
-        int hash = user.hashCode();
-        int hash1 = Objects.hash(id);
 
-        assertEquals(hash, hash1);
 
         assertEquals("email@email.ru", email);
         assertEquals("name", name);
         assertEquals(1L, id);
         assertEquals(user, user2);
-        assertEquals(hash, Objects.hash(id));
+
 
     }
 

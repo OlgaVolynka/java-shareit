@@ -30,7 +30,7 @@ public class ItemController {
     public ResponseEntity<Object> findAll(@RequestHeader("X-Sharer-User-Id") Long userId,
                                           @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                           @RequestParam(defaultValue = "100") @Positive Integer size) {
-        log.info("Получен запрос GET allUsers");
+        log.info("Get items for user with id = {} ", userId);
         return itemService.findAll(userId, from, size);
     }
 
@@ -39,7 +39,7 @@ public class ItemController {
             @RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text,
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(defaultValue = "100") @Positive Integer size) {
-        log.info("Получен запрос на список вещей по запросу", text);
+        log.info("Find item with text = {}", text);
         return itemService.search(userId, text, from, size);
     }
 
@@ -47,7 +47,7 @@ public class ItemController {
     @Validated({Marker.OnCreate.class})
     public ResponseEntity<Object> createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                                              @RequestBody @Validated({Marker.OnCreate.class}) ItemDto itemDto) {
-        log.info("Получен запрос Post createItem");
+        log.info("Create item for user with id = {} ", userId);
         return itemService.createItem(userId, itemDto);
     }
 
@@ -55,20 +55,20 @@ public class ItemController {
     public ResponseEntity<Object> updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                                              @RequestBody @Validated({Marker.OnUpdate.class}) ItemDto item,
                                              @PathVariable("id") long itemId) {
-        log.info("Получен запрос Patch updateItem");
+        log.info("Update item with id = {} for user with id = {} ", itemId, userId);
         return itemService.updateItem(item, itemId, userId);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                               @PathVariable("id") Long itemId) {
-        log.info("Получен запрос GET item by id");
+        log.info("Get item with id = {} for user with id = {} ", itemId, userId);
         return itemService.getItemById(itemId, userId);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteItemById(@PathVariable("id") Long userId) {
-        log.info("Получен запрос Delete item by id");
+        log.info("Remove item with id = {}", userId);
         return itemService.deleteItemById(userId);
     }
 
@@ -76,7 +76,7 @@ public class ItemController {
     public ResponseEntity<Object> getItemCommentsById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                       @PathVariable("itemId") Long itemId,
                                                       @RequestBody @Valid CommentDto comments) {
-        log.info("Получен запрос Post comment");
+        log.info("Create comment item with id = {}", itemId);
         return itemService.createItemCommentsById(itemId, userId, comments);
     }
 }

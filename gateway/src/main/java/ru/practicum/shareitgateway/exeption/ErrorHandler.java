@@ -29,32 +29,11 @@ public class ErrorHandler {
         return new ErrorResponse("Unknown state: UNSUPPORTED_STATUS", e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handlerNoSuchElementException(NoSuchElementException e) {
-        log.error("Caught IllegalArgumentException: {}", e.getMessage());
-        return new ErrorResponse("NoSuchElementException", e.getMessage());
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgumentException(MethodArgumentNotValidException e) {
         log.error("Method Argument Not Valid Exception: {}", e.getMessage());
         return new ErrorResponse("MethodArgumentNotValidException", e.getMessage());
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlerConstraintViolationException(ConstraintViolationException e) {
-        log.error("Constraint Violation Exception: {}", e.getMessage());
-        return new ErrorResponse("MethodArgumentNotValidException", e.getMessage());
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlerConstraintViolationException(final ValidationException e) {
-        log.error("Validation Exception: {}", e.getMessage());
-        return new ErrorResponse("MValidation Exception ", e.getMessage());
     }
 
 }

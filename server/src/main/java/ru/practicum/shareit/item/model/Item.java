@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,6 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "items", schema = "public")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Item {
 
     @Id
@@ -41,16 +42,4 @@ public class Item {
     @Column(name = "requests_id")
     private Long requestId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return id == item.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

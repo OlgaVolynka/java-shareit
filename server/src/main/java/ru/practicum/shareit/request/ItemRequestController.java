@@ -23,20 +23,20 @@ public class ItemRequestController {
     @PostMapping
     public RequestForRequestDto createRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
                                               @RequestBody RequestDto requestDto) {
-        log.info("Получен запрос Post createRequest");
+        log.info("Create ite, request {}", userId);
         return requestService.create(requestDto, userId);
     }
 
     @GetMapping
     public List<RequestForRequestDto> findAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        log.info("Получен запрос GET allRequest");
+        log.info("Get all  for user with id =  {}", userId);
         return requestService.findAll(userId);
     }
 
     @GetMapping("/{requestId}")
     public RequestForRequestDto findById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                          @PathVariable("requestId") Long requestId) {
-        log.info("Получен запрос GET byIdRequest");
+        log.info("Get request with id = {}", requestId);
         return requestService.findById(userId, requestId);
     }
 
@@ -45,7 +45,7 @@ public class ItemRequestController {
                                                   @RequestParam(defaultValue = "0") Integer from,
                                                   @RequestParam(defaultValue = "100") Integer size) {
 
-        log.info("Получен запрос GET byIdRequest");
+        log.info("Get all item requests for user with id =  {}", userId);
         return requestService.findAllWith(userId, from, size);
 
     }
